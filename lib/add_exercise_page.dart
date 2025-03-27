@@ -42,7 +42,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
             ),
             TextField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: InputDecoration(labelText: 'Description of Exercise'),
             ),
             TextField(
               controller: _muscleGroupController,
