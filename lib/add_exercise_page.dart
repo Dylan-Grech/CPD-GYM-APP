@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'firestore_service.dart';
+import 'camera_page.dart';
+import 'dart:io';
 
 class AddExercisePage extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final _descriptionController = TextEditingController();
   final _muscleGroupController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
+  String? _imagePath; 
 
   // Save the exercise
   void _saveExercise() {
@@ -18,13 +21,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
     final description = _descriptionController.text;
     final muscleGroup = _muscleGroupController.text;
 
-    if (name.isNotEmpty && description.isNotEmpty && muscleGroup.isNotEmpty) {
-      _firestoreService.saveExercise(name, description, muscleGroup).then((_) {
+    if (name.isNotEmpty && description.isNotEmpty && muscleGroup.isNotEmpty && _imagePath != null) {
+      _firestoreService.saveExercise(name, description, muscleGroup, _imagePath).then((_) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Exercise saved!')));
         _nameController.clear();
         _descriptionController.clear();
         _muscleGroupController.clear();
       });
+    } else if (_imagePath == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please capture a photo')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please fill in all fields and capture a photo')));
     }
   }
 
@@ -47,6 +54,22 @@ class _AddExercisePageState extends State<AddExercisePage> {
             TextField(
               controller: _muscleGroupController,
               decoration: InputDecoration(labelText: 'Muscle Group'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                final imagePath = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CameraPage()),
+                );
+
+                if (imagePath != null) {
+                  setState(() {
+                    _imagePath = imagePath;  
+                  });
+                }
+              },
+              child: Text('Capture Exercise Photo'),
             ),
             SizedBox(height: 16),
             ElevatedButton(

@@ -4,12 +4,13 @@ class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Save a new exercise
-  Future<void> saveExercise(String name, String description, String muscleGroup) async {
+  Future<void> saveExercise(String name, String description, String muscleGroup, String? imagePath) async {
     try {
       await _db.collection('exercises').add({
         'name': name,
         'description': description,
         'muscleGroup': muscleGroup,
+        'imagePath': imagePath,  // Save the image path or URL
         'createdAt': Timestamp.now(),
       });
     } catch (e) {
@@ -28,6 +29,7 @@ class FirestoreService {
           'name': data['name'],
           'description': data['description'],
           'muscleGroup': data['muscleGroup'],
+          'imagePath': data['imagePath'],  // Retrieve image path or URL
         };
       }).toList();
     } catch (e) {
