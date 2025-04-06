@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 import 'camera_page.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddExercisePage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final _descriptionController = TextEditingController();
   final _muscleGroupController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
-  String? _imagePath; 
+  String? _imagePath;
 
   // Save the exercise
   void _saveExercise() {
@@ -35,6 +36,28 @@ class _AddExercisePageState extends State<AddExercisePage> {
     }
   }
 
+  Future<void> _requestCameraPermission() async {
+    PermissionStatus status = await Permission.camera.request();
+
+    if (status.isGranted) {
+      final imagePath = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CameraPage()),
+      );
+
+      if (imagePath != null) {
+        setState(() {
+          _imagePath = imagePath;
+        });
+      }
+    } else if (status.isDenied) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Camera permission is required to capture a photo')));
+    } else if (status.isPermanentlyDenied) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enable camera permission in settings')));
+      openAppSettings();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,38 +66,46 @@ class _AddExercisePageState extends State<AddExercisePage> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Exercise Name'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description of Exercise'),
-            ),
-            TextField(
-              controller: _muscleGroupController,
-              decoration: InputDecoration(labelText: 'Muscle Group'),
+            Semantics(
+              label: 'Enter Exercise Name',
+              child: TextField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Exercise Name'),
+              ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                final imagePath = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CameraPage()),
-                );
-
-                if (imagePath != null) {
-                  setState(() {
-                    _imagePath = imagePath;  
-                  });
-                }
-              },
-              child: Text('Capture Exercise Photo'),
+            Semantics(
+              label: 'Enter Description of Exercise',
+              child: TextField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Description of Exercise'),
+              ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _saveExercise,
-              child: Text('Save Exercise'),
+            Semantics(
+              label: 'Enter Muscle Group',
+              child: TextField(
+                controller: _muscleGroupController,
+                decoration: InputDecoration(labelText: 'Muscle Group'),
+              ),
+            ),
+            SizedBox(height: 16),
+            Semantics(
+              label: 'Capture Exercise Photo',
+              button: true,
+              child: ElevatedButton(
+                onPressed: _requestCameraPermission,  
+                child: Text('Capture Exercise Photo'),
+              ),
+            ),
+            SizedBox(height: 16),
+            Semantics(
+              label: 'Save Exercise',
+              button: true,
+              child: ElevatedButton(
+                onPressed: _saveExercise,
+                child: Text('Save Exercise'),
+              ),
             ),
           ],
         ),
