@@ -3,6 +3,7 @@ import 'firestore_service.dart';
 import 'camera_page.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'image_gallery_page.dart';
 
 class AddExercisePage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final _muscleGroupController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
   String? _imagePath;
+  
 
   // Save the exercise
   void _saveExercise() {

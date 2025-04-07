@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';  
 import 'add_exercise_page.dart';
 import 'display_exercises_page.dart';
+import 'image_gallery_page.dart';
 import 'dart:async';
 
 
@@ -36,6 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
   static List<Widget> _pages = <Widget>[
     AddExercisePage(),
     DisplayExercisesPage(),
+    ImageGalleryPage(), // Pass an empty list for now
   ];
 
   void _onItemTapped(int index) {
@@ -60,6 +62,10 @@ class _NavigationPageState extends State<NavigationPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Exercises',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'See Exercise Images',
           ),
         ],
       ),

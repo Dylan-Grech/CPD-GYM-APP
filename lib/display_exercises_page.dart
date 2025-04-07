@@ -62,12 +62,6 @@ class _DisplayExercisesPageState extends State<DisplayExercisesPage> {
                               overflow: TextOverflow.ellipsis, 
                               maxLines: 2, 
                             ),
-                            Text(
-                              exercise['imagePath'],
-                              style: TextStyle(fontSize: 14),
-                              overflow: TextOverflow.ellipsis, 
-                              maxLines: 2, 
-                            ),
                           ],
                         ),
                       ),
