@@ -37,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
   static List<Widget> _pages = <Widget>[
     AddExercisePage(),
     DisplayExercisesPage(),
-    ImageGalleryPage(), // Pass an empty list for now
+    ImageGalleryPage(), 
   ];
 
   void _onItemTapped(int index) {

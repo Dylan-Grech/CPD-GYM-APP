@@ -16,26 +16,22 @@ class _CameraPageState extends State<CameraPage> {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      final directory = await getApplicationDocumentsDirectory(); // Get app's documents directory
+      final directory = await getApplicationDocumentsDirectory(); 
 
       if (directory != null) {
-        // Define the file path for saving the image
         final String formattedDate = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
         final String filePath = '${directory.path}/Pictures/IMG_$formattedDate.jpg'; 
 
-        // Ensure the Pictures directory exists
         final picturesDirectory = Directory('${directory.path}/Pictures');
         if (!await picturesDirectory.exists()) {
-          await picturesDirectory.create(recursive: true); // Create the directory if it doesn't exist
+          await picturesDirectory.create(recursive: true); 
         }
 
-        // Save the image in the Pictures directory
         final File localImage = File(image.path);
         await localImage.copy(filePath);
 
         print("Image saved at: $filePath");
 
-        // Pass the saved file path back to the previous page
         Navigator.pop(context, filePath);
       }
     }

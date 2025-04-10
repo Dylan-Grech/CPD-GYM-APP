@@ -16,7 +16,6 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
     _loadImages();
   }
 
-  // Load images from the app's local storage
   Future<void> _loadImages() async {
     final directory = await getApplicationDocumentsDirectory();
     final picturesDirectory = Directory('${directory.path}/Pictures');
@@ -25,12 +24,11 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
       final List<FileSystemEntity> files = picturesDirectory.listSync();
       setState(() {
         _images = files
-            .where((file) => file.path.endsWith('.jpg')) // Filter for .jpg files
+            .where((file) => file.path.endsWith('.jpg')) 
             .map((file) => File(file.path))
             .toList();
       });
 
-      // Print the image paths to ensure they are being read correctly
       print("Images found: ${_images.length}");
       _images.forEach((file) {
         print("Image: ${file.path}");
@@ -48,7 +46,7 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
           ? Center(child: Text('No images yet'))
           : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // Display 3 images per row
+                crossAxisCount: 3, 
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
               ),
