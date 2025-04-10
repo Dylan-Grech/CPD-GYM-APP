@@ -40,13 +40,15 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(title: Text('In-App Gallery')),
       body: _images.isEmpty
           ? Center(child: Text('No images yet'))
           : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, 
+                crossAxisCount: isLandscape ? 4 : 2, 
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
               ),
